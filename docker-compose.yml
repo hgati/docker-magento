@@ -1,25 +1,26 @@
-version: '3.0'
+version: '3.6'
 
 services:
+
   web:
     image: alexcheng/magento
+    container_name: web
     ports:
       - "80:80"
-    links:
-      - db
+      - "443:443"
     env_file:
       - env
+
   db:
-    image: mysql:5.6.23
+    image: mysql:8.0
+    container_name: db
+    command: mysqld --default_authentication_plugin=mysql_native_password
+    ports:
+      - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql/data
+      - db-data:/var/lib/mysql
     env_file:
       - env
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - "8580:80"
-    links:
-      - db     
+
 volumes:
-  db-data:   
+  db-data:

@@ -1,6 +1,7 @@
-FROM alexcheng/apache2-php5:5.6.33
+FROM alexcheng/apache2-php7:7.1.11
 
-ENV MAGENTO_VERSION 1.9.3.8
+ENV MAGENTO_VERSION 1.9.3.9
+ARG PATCH_FILENAME=PATCH-1.9.3.1-1.9.3.9_PHP7-2018-09-13-08-01-43.2_v2
 
 RUN a2enmod rewrite
 
@@ -30,6 +31,14 @@ RUN chmod +x /usr/local/bin/install-sampledata
 
 RUN bash -c 'bash < <(curl -s -L https://raw.github.com/colinmollenhour/modman/master/modman-installer)'
 RUN mv ~/bin/modman /usr/local/bin
+
+# Patching with PHP 7.2 support - for Magento v1.9.3.9
+# https://inchoo.net/magento/magento-1-official-php-7-2-patches/
+RUN echo "PATCHING PHP7.2 SUPPORT FOR MAGENTO v1.9.3.9" && \
+	apt-get install patch && \
+    cd $INSTALL_DIR && \
+	curl -OL https://raw.githubusercontent.com/brentwpeterson/magento-patches/master/CE1.9/$PATCH_FILENAME && \
+	patch -p1 < $PATCH_FILENAME && rm -f $PATCH_FILENAME
 
 WORKDIR $INSTALL_DIR
 
