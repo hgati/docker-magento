@@ -5,6 +5,8 @@ services:
   web:
     image: parsemaker/docker-magento:1.9.3.9
     container_name: web
+    volumes:
+      - .:/root/
     ports:
       - "80:80"
       - "443:443"
