@@ -1,4 +1,4 @@
-# Docker image for Magento 1.x
+# Docker image for Magento 1.9
 
 [![](https://images.microbadger.com/badges/image/alexcheng/magento.svg)](http://microbadger.com/images/alexcheng/magento)
 
